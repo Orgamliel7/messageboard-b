@@ -10,7 +10,7 @@ OBJECTS=$(subst .cpp,.o,$(SOURCES))
 run: test
 	./$^
 
-test: TestRunner.o StudentTest1.o StudentTest2.o StudentTest3.o $(OBJECTS)
+test: TestRunner.o StudentTest1.o $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o test
 
 main: Main.o $(OBJECTS)
@@ -19,20 +19,20 @@ main: Main.o $(OBJECTS)
 %.o: %.cpp $(HEADERS)
 	$(CXX) $(CXXFLAGS) --compile $< -o $@
 
-StudentTest1.cpp:  # 
-	curl ?? > $@
+StudentTest1.cpp:  # Shani Shuv
+	curl https://raw.githubusercontent.com/ShaniShuv/cppm2/master/Test.cpp > $@
 
-StudentTest2.cpp: # 
-	curl ?? > $@
+StudentTest2.cpp:  # Reut Maslansky
+	curl https://raw.githubusercontent.com/Reut-Maslansky/Ariel-CPP--ex2/master/Test.cpp > $@
 
-StudentTest3.cpp: # 
-	curl ?? > $@
+# StudentTest3.cpp:  # ?
+# 	curl ?? > $@
 
 tidy:
 	clang-tidy $(SOURCES) -checks=bugprone-*,clang-analyzer-*,cppcoreguidelines-*,performance-*,portability-*,readability-*,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-cppcoreguidelines-owning-memory --warnings-as-errors=-* --
 
 valgrind: test
-	valgrind --error-exitcode --tool=memcheck $(VALGRIND_FLAGS) ./test 2>&1 | { egrep "lost| at " || true; }
+	valgrind --leak-check=full --error-exitcode=99 --tool=memcheck $(VALGRIND_FLAGS) ./test 
 
 clean:
 	rm -f *.o test
