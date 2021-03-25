@@ -10,7 +10,7 @@ OBJECTS=$(subst .cpp,.o,$(SOURCES))
 run: test
 	./$^
 
-test: TestRunner.o StudentTest1.o $(OBJECTS)
+test: TestRunner.o StudentTest1.o StudentTest2.o $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o test
 
 main: Main.o $(OBJECTS)
@@ -24,9 +24,6 @@ StudentTest1.cpp:  # Shani Shuv
 
 StudentTest2.cpp:  # Reut Maslansky
 	curl https://raw.githubusercontent.com/Reut-Maslansky/Ariel-CPP--ex2/master/Test.cpp > $@
-
-# StudentTest3.cpp:  # ?
-# 	curl ?? > $@
 
 tidy:
 	clang-tidy $(SOURCES) -checks=bugprone-*,clang-analyzer-*,cppcoreguidelines-*,performance-*,portability-*,readability-*,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-cppcoreguidelines-owning-memory --warnings-as-errors=-* --
